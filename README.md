@@ -1,3 +1,35 @@
-# React + TypeScript + Vite
+# React Products App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🛠️ Технологии
+
+* React
+* TypeScript
+* Vite
+* TanStack Router
+* TanStack Query
+* Tailwind CSS
+
+---
+
+## 📦 Запуск
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## 🏗️ Сборка проекта
+
+```bash
+npm run build
+```
+
+---
+
+## 🌐 Деплой
+
+Проект задеплоен на [Vercel](https://react-ts-puce.vercel.app/)
+
+---
