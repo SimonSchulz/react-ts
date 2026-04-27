@@ -1,8 +1,17 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { Outlet, createRootRoute, redirect } from '@tanstack/react-router'
 import { Header } from '../shared/ui/Header.tsx'
 import { Footer } from '../shared/ui/Footer.tsx'
+import { isAuthenticated } from '../shared/lib/auth.ts'
+import { LoginModal } from '../shared/ui/LoginModal.tsx'
 
 export const Route = createRootRoute({
+  beforeLoad: ({ location }) => {
+    const isAuth = isAuthenticated()
+    const isPublic = location.pathname === '/'
+    if (!isAuth && !isPublic) {
+      throw redirect({ to: '/' })
+    }
+  },
   component: RootComponent
 })
 
@@ -11,6 +20,7 @@ function RootComponent() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <Outlet />
+      <LoginModal />
       <Footer />
     </div>
   )

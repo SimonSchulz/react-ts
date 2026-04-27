@@ -9,16 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UserRouteImport } from './routes/user'
+import { Route as MeRouteImport } from './routes/me'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as ProductsIdRouteImport } from './routes/products/$id'
 
-const UserRoute = UserRouteImport.update({
-  id: '/user',
-  path: '/user',
+const MeRoute = MeRouteImport.update({
+  id: '/me',
+  path: '/me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -51,7 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
-  '/user': typeof UserRoute
+  '/me': typeof MeRoute
   '/products/$id': typeof ProductsIdRoute
   '/products/': typeof ProductsIndexRoute
 }
@@ -59,7 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
-  '/user': typeof UserRoute
+  '/me': typeof MeRoute
   '/products/$id': typeof ProductsIdRoute
   '/products': typeof ProductsIndexRoute
 }
@@ -68,21 +68,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
   '/chat': typeof ChatRoute
-  '/user': typeof UserRoute
+  '/me': typeof MeRoute
   '/products/$id': typeof ProductsIdRoute
   '/products/': typeof ProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cart' | '/chat' | '/user' | '/products/$id' | '/products/'
+  fullPaths: '/' | '/cart' | '/chat' | '/me' | '/products/$id' | '/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cart' | '/chat' | '/user' | '/products/$id' | '/products'
+  to: '/' | '/cart' | '/chat' | '/me' | '/products/$id' | '/products'
   id:
     | '__root__'
     | '/'
     | '/cart'
     | '/chat'
-    | '/user'
+    | '/me'
     | '/products/$id'
     | '/products/'
   fileRoutesById: FileRoutesById
@@ -91,18 +91,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CartRoute: typeof CartRoute
   ChatRoute: typeof ChatRoute
-  UserRoute: typeof UserRoute
+  MeRoute: typeof MeRoute
   ProductsIdRoute: typeof ProductsIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/user': {
-      id: '/user'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof UserRouteImport
+    '/me': {
+      id: '/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof MeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -147,7 +147,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CartRoute: CartRoute,
   ChatRoute: ChatRoute,
-  UserRoute: UserRoute,
+  MeRoute: MeRoute,
   ProductsIdRoute: ProductsIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useProducts } from '../../shared/api/useProducts.ts'
 import { ProductsGridSkeleton } from '../../shared/ui/ProductsGridSkeleton.tsx'
 import { ProductsGrid } from '../../shared/ui/ProductsGrid.tsx'
+import { useProducts } from '../../shared/api/hooks/useProducts.ts'
 
 export const Route = createFileRoute('/products/')({
   component: ProductsPage
