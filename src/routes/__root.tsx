@@ -19,8 +19,10 @@ function RootComponent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <Outlet />
-      <LoginModal />
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-4">
+        <Outlet />
+        <LoginModal />
+      </main>
       <Footer />
     </div>
   )

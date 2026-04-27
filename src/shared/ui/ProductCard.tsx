@@ -1,11 +1,21 @@
 import { Link } from '@tanstack/react-router'
-import type { Product } from '../types/product.ts'
+import type { Product } from '../types/product'
+import { useCartStore } from '../store/cart'
+import * as React from 'react'
 
 type Props = {
   product: Product
 }
 
 export const ProductCard = ({ product }: Props) => {
+  const addToCart = useCartStore((state) => state.addToCart)
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    addToCart(product)
+  }
+
   return (
     <Link
       to="/products/$id"
@@ -24,6 +34,13 @@ export const ProductCard = ({ product }: Props) => {
         <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
         <span className="text-base font-semibold">${product.price}</span>
       </div>
+
+      <button
+        onClick={handleAdd}
+        className="mt-auto bg-black text-white py-2 rounded hover:opacity-90 transition"
+      >
+        Add to cart
+      </button>
     </Link>
   )
 }
