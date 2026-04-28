@@ -1,17 +1,12 @@
-import { getUser, removeUser } from '../lib/user.ts'
+import { fetcher } from './fetcher'
+import { getUser } from '../lib/user'
+import type { User } from '../types/user.ts'
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const user = getUser()
-
-  const res = await fetch('https://dummyjson.com/auth/me', {
+  return fetcher('https://dummyjson.com/auth/me', {
     headers: {
       Authorization: `Bearer ${user?.accessToken}`
     }
   })
-
-  if (res.status === 401) {
-    removeUser()
-    throw new Error('Unauthorized')
-  }
-  return res.json()
 }

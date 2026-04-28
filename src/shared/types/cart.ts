@@ -1,12 +1,13 @@
-export type CartItem = {
-  id: number
-  title: string
-  price: number
-  thumbnail: string
+import type { Product } from './product.ts'
+
+export type CartItem = Product & {
   quantity: number
 }
 
 export type CartState = {
   items: CartItem[]
-  addToCart: (item: Omit<CartItem, 'quantity'>) => void
+  addToCart: (product: Product) => void
+  removeFromCart: (id: number) => void
+  decreaseQuantity: (id: number) => void
+  clearCart: () => void
 }

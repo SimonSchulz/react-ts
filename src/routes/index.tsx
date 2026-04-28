@@ -5,8 +5,9 @@ import { ProductsGridSkeleton } from '../shared/ui/ProductsGridSkeleton'
 import { useState } from 'react'
 import { CategoriesList } from '../shared/ui/CategoriesList.tsx'
 import { Pagination } from '../shared/ui/Pagination.tsx'
-import { PRODUCTS_LIMIT } from '../shared/config/constants.ts'
-
+import { PRODUCTS_LIMIT, QUERY_KEYS } from '../shared/config/constants.ts'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
+import { queryClient } from '../shared/app/queryClient.ts'
 export const Route = createFileRoute('/')({
   component: HomePage
 })
@@ -15,9 +16,17 @@ function HomePage() {
   const limit = PRODUCTS_LIMIT
   const [category, setCategory] = useState<string | undefined>()
   const [page, setPage] = useState(1)
-
-  const { data, isLoading } = useProducts(page, category)
-
+  const { data, isLoading, isError, error } = useProducts(page, category)
+  if (isError) {
+    return (
+      <ErrorBoundary
+        message={(error as Error).message}
+        onRetry={() =>
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] })
+        }
+      />
+    )
+  }
   return (
     <div className="flex flex-col gap-12">
       <section className="bg-gray-100 rounded-xl p-10 text-center">

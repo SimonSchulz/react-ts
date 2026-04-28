@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useProduct } from '../../shared/api/hooks/useProduct'
 import { useCartStore } from '../../shared/store/cart'
+import { ErrorBoundary } from '../../shared/ui/ErrorBoundary.tsx'
+import { queryClient } from '../../shared/app/queryClient.ts'
+import { QUERY_KEYS } from '../../shared/config/constants.ts'
 
 export const Route = createFileRoute('/products/$id')({
   component: ProductPage
@@ -25,7 +28,15 @@ function ProductPage() {
     )
   }
 
-  if (isError) return <div>Error loading product</div>
+  if (isError) {
+    return (
+      <ErrorBoundary
+        onRetry={() =>
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCT] })
+        }
+      />
+    )
+  }
   if (!data) return <div>Not found</div>
 
   return (

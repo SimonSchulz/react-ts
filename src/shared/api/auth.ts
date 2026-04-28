@@ -15,7 +15,7 @@ export const login = async ({
   })
 
   if (!res.ok) {
-    throw new Error('Login failed')
+    throw new Error('Wrong username or password')
   }
 
   return res.json()

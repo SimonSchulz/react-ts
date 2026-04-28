@@ -1,6 +1,6 @@
 import type { Product } from '../types/product'
+import { fetcher } from './fetcher.ts'
 
 export const getProductById = async (id: string): Promise<Product> => {
-  const res = await fetch(`https://dummyjson.com/products/${id}`)
-  return await res.json()
+  return fetcher(`https://dummyjson.com/products/${id}`)
 }

@@ -1,52 +1,58 @@
 import { create } from 'zustand'
-import type { Product } from '../types/product.ts'
+import type { CartItem, CartState } from '../types/cart.ts'
 
-type CartItem = {
-  id: number
-  title: string
-  price: number
-  thumbnail: string
-  quantity: number
+const STORAGE_KEY = 'cart'
+
+const loadCart = (): CartItem[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY)
+    return data ? JSON.parse(data) : []
+  } catch {
+    return []
+  }
 }
 
-type CartState = {
-  items: CartItem[]
-  addToCart: (product: Product) => void
-  removeFromCart: (id: number) => void
-  decreaseQuantity: (id: number) => void
-  clearCart: () => void
+const saveCart = (items: CartItem[]) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
 }
 
 export const useCartStore = create<CartState>((set) => ({
-  items: [],
+  items: loadCart(),
 
   addToCart: (product) =>
     set((state) => {
       const existing = state.items.find((i) => i.id === product.id)
 
-      if (existing) {
-        return {
-          items: state.items.map((i) =>
+      const updated = existing
+        ? state.items.map((i) =>
             i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
           )
-        }
-      }
+        : [...state.items, { ...product, quantity: 1 }]
 
-      return {
-        items: [...state.items, { ...product, quantity: 1 }]
-      }
+      saveCart(updated)
+      return { items: updated }
     }),
+
   decreaseQuantity: (id) =>
-    set((state) => ({
-      items: state.items
+    set((state) => {
+      const updated = state.items
         .map((i) => (i.id === id ? { ...i, quantity: i.quantity - 1 } : i))
         .filter((i) => i.quantity > 0)
-    })),
+
+      saveCart(updated)
+      return { items: updated }
+    }),
 
   removeFromCart: (id) =>
-    set((state) => ({
-      items: state.items.filter((i) => i.id !== id)
-    })),
+    set((state) => {
+      const updated = state.items.filter((i) => i.id !== id)
+      saveCart(updated)
+      return { items: updated }
+    }),
 
-  clearCart: () => set({ items: [] })
+  clearCart: () =>
+    set(() => {
+      saveCart([])
+      return { items: [] }
+    })
 }))

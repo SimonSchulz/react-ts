@@ -1,15 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useMe } from '../shared/api/hooks/useMe.ts'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
+import { queryClient } from '../shared/app/queryClient.ts'
+import { QUERY_KEYS } from '../shared/config/constants.ts'
 
 export const Route = createFileRoute('/me')({
   component: UserPage
 })
 
 function UserPage() {
-  const { data, isLoading, isError } = useMe()
+  const { data, isLoading, isError, error } = useMe()
 
   if (isLoading) return <div className="text-center">Loading...</div>
-  if (isError || !data) return <div className="text-center">Unauthorized</div>
+  if (isError || !data)
+    return (
+      <ErrorBoundary
+        message={(error as Error).message}
+        onRetry={() =>
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ME] })
+        }
+      />
+    )
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-8">

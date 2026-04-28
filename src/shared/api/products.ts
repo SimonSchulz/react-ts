@@ -1,3 +1,4 @@
+import { fetcher } from './fetcher'
 import type { Product } from '../types/product'
 
 type Response = {
@@ -16,11 +17,5 @@ export const getProducts = async (
     ? `https://dummyjson.com/products/category/${category}`
     : `https://dummyjson.com/products`
 
-  const res = await fetch(`${base}?limit=${limit}&skip=${skip}`)
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch products')
-  }
-
-  return res.json()
+  return fetcher(`${base}?limit=${limit}&skip=${skip}`)
 }
