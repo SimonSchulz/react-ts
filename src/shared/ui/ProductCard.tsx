@@ -1,14 +1,19 @@
 import { Link } from '@tanstack/react-router'
 import type { Product } from '../types/product'
 import { useCartStore } from '../store/cart'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '../config/constants'
 import * as React from 'react'
+import { getProductById } from '../api/product.ts'
 
 type Props = {
   product: Product
+  priority?: boolean
 }
 
-export const ProductCard = ({ product }: Props) => {
+export const ProductCard = ({ product, priority }: Props) => {
   const addToCart = useCartStore((state) => state.addToCart)
+  const queryClient = useQueryClient()
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -16,16 +21,32 @@ export const ProductCard = ({ product }: Props) => {
     addToCart(product)
   }
 
+  const handlePrefetch = () => {
+    queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.PRODUCT, product.id],
+      queryFn: () => getProductById(product.id)
+    })
+
+    const img = new Image()
+    img.src = product.thumbnail
+  }
+
   return (
     <Link
       to="/products/$id"
       params={{ id: String(product.id) }}
-      className="border border-gray-200 rounded-xl p-3 flex flex-col gap-2 hover:scale-[1.02] transition"
+      onMouseEnter={handlePrefetch}
+      className="border border-gray-200 rounded-xl p-3 flex flex-col gap-2 hover:scale-[1.02] will-change-transform transition"
     >
       <div className="aspect-square overflow-hidden rounded-lg">
         <img
           src={product.thumbnail}
           alt={product.title}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+          width={300}
+          height={300}
           className="w-full h-full object-cover"
         />
       </div>

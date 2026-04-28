@@ -49,15 +49,12 @@ function HomePage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">Popular Products</h2>
-
         {isLoading ? (
           <ProductsGridSkeleton />
         ) : (
           <ProductsGrid products={data?.products || []} />
         )}
       </section>
-
       <Pagination
         page={page}
         total={data?.total || 0}

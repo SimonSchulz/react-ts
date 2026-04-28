@@ -9,6 +9,7 @@ export const useProducts = (
   return useQuery({
     queryKey: ['products', page, category, search],
     queryFn: () => getProducts(page, category, search),
-    placeholderData: (prev) => prev
+    placeholderData: (prev) => prev,
+    staleTime: 1000 * 60
   })
 }

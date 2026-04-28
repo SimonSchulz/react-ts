@@ -5,7 +5,8 @@ import { routeTree } from './routeTree.gen'
 import { StrictMode } from 'react'
 import './index.css'
 import { queryClient } from './shared/app/queryClient.ts'
-const router = createRouter({ routeTree })
+import { NotFound } from './shared/ui/NotFound.tsx'
+const router = createRouter({ routeTree, defaultNotFoundComponent: NotFound })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <StrictMode>

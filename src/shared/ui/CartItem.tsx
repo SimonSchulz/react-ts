@@ -11,6 +11,8 @@ export const CartItem = ({ item }: { item: CartItemType }) => {
       <img
         src={item.thumbnail}
         alt={item.title}
+        loading="lazy"
+        decoding="async"
         className="w-20 h-20 object-cover rounded"
       />
 

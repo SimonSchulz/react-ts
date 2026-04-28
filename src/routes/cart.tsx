@@ -1,12 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { useCartStore } from '../shared/store/cart'
 import { CartItem } from '../shared/ui/CartItem'
 
-export const Route = createFileRoute('/cart')({
-  component: CartPage
-})
-
-function CartPage() {
+export default function CartPage() {
   const items = useCartStore((state) => state.items)
   const clearCart = useCartStore((state) => state.clearCart)
 

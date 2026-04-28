@@ -1,17 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useMe } from '../shared/api/hooks/useMe.ts'
-import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
-import { queryClient } from '../shared/app/queryClient.ts'
-import { QUERY_KEYS } from '../shared/config/constants.ts'
+import { useMe } from '../shared/api/hooks/useMe'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
+import { queryClient } from '../shared/app/queryClient'
+import { QUERY_KEYS } from '../shared/config/constants'
 
-export const Route = createFileRoute('/me')({
-  component: UserPage
-})
-
-function UserPage() {
+export default function UserPage() {
   const { data, isLoading, isError, error } = useMe()
 
   if (isLoading) return <div className="text-center">Loading...</div>
+
   if (isError || !data)
     return (
       <ErrorBoundary
@@ -28,6 +24,8 @@ function UserPage() {
         <img
           src={data.image}
           alt={data.username}
+          loading="eager"
+          fetchPriority="high"
           className="w-24 h-24 rounded-full"
         />
 

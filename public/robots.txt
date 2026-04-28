@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://react-ts-two-lime.vercel.app/sitemap.xml
