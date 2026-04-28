@@ -29,17 +29,20 @@ export const Header = () => {
       <div className="container mx-auto p-4 flex items-center justify-between">
         <div className="flex gap-4 items-center">
           <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
+          <Link to="/products">Search</Link>
         </div>
-
+        <section className="rounded-xl text-center">
+          <h1 className="text-3xl font-semibold mb-2">MY STORE</h1>
+          <p className="text-gray-500">
+            Smart shopping experience with modern stack
+          </p>
+        </section>
         <div className="flex gap-6 items-center">
           <Link
             to="/cart"
             className="relative flex items-center gap-1 text-gray-600 hover:text-black transition"
           >
-            {/* ✅ фикс пути */}
             <img src="/cart.svg" alt="cart" className="w-5 h-5" />
-
             <span>Cart</span>
 
             {totalCount > 0 && (

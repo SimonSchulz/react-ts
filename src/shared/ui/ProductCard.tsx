@@ -27,6 +27,7 @@ export const ProductCard = ({ product, priority }: Props) => {
       queryFn: () => getProductById(product.id)
     })
 
+    // 🔥 прелоад картинки (очень влияет на LCP)
     const img = new Image()
     img.src = product.thumbnail
   }

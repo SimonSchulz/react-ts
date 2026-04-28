@@ -1,11 +1,12 @@
 import { fetcher } from './fetcher.ts'
 import type { ProductResponse } from '../types/product.ts'
+import { PAGINATION_LIMIT } from '../config/constants.ts'
 
 export const getProducts = async (
   page: number,
   category?: string,
   search?: string,
-  limit = 16
+  limit = PAGINATION_LIMIT
 ): Promise<ProductResponse> => {
   const skip = (page - 1) * limit
   let url = `https://dummyjson.com/products?limit=${limit}&skip=${skip}`

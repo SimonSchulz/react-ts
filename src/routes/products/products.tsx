@@ -35,31 +35,25 @@ export default function ProductsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-8">
-      <div className="flex flex-col gap-4">
-        <input
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setPage(1)
-          }}
-          placeholder="Search products..."
-          className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-        />
-      </div>
+      <input
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value)
+          setPage(1)
+        }}
+        placeholder="Search products..."
+        className="w-full border rounded-lg px-4 py-2"
+      />
 
-      <div className="flex flex-col gap-2">
-        <span className="text-sm text-gray-500">Categories</span>
+      <CategoriesList
+        selected={category}
+        onSelect={(cat) => {
+          setCategory(cat)
+          setPage(1)
+        }}
+      />
 
-        <CategoriesList
-          selected={category}
-          onSelect={(cat) => {
-            setCategory(cat)
-            setPage(1)
-          }}
-        />
-      </div>
-
-      <div className="relative">
+      <div className="min-h-[600px]">
         {isLoading ? (
           <ProductsGridSkeleton />
         ) : (

@@ -3,11 +3,12 @@ import { useProducts } from '../shared/api/hooks/useProducts'
 import { ProductsGrid } from '../shared/ui/ProductsGrid'
 import { ProductsGridSkeleton } from '../shared/ui/ProductsGridSkeleton'
 import { useState } from 'react'
-import { CategoriesList } from '../shared/ui/CategoriesList.tsx'
-import { Pagination } from '../shared/ui/Pagination.tsx'
-import { PAGINATION_LIMIT, QUERY_KEYS } from '../shared/config/constants.ts'
-import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
-import { queryClient } from '../shared/app/queryClient.ts'
+import { CategoriesList } from '../shared/ui/CategoriesList'
+import { Pagination } from '../shared/ui/Pagination'
+import { PAGINATION_LIMIT, QUERY_KEYS } from '../shared/config/constants'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
+import { queryClient } from '../shared/app/queryClient'
+
 export const Route = createFileRoute('/')({
   component: HomePage
 })
@@ -27,15 +28,9 @@ function HomePage() {
       />
     )
   }
+
   return (
     <div className="flex flex-col gap-12">
-      <section className="bg-gray-100 rounded-xl p-10 text-center">
-        <h1 className="text-3xl font-semibold mb-2">Simple Store</h1>
-        <p className="text-gray-500">
-          Clean shopping experience with modern stack
-        </p>
-      </section>
-
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Categories</h2>
 
@@ -47,8 +42,7 @@ function HomePage() {
           }}
         />
       </section>
-
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4 min-h-[600px]">
         {isLoading ? (
           <ProductsGridSkeleton />
         ) : (
