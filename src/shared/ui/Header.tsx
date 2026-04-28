@@ -30,6 +30,7 @@ export const Header = () => {
         <div className="flex gap-4 items-center">
           <Link to="/">Home</Link>
           <Link to="/products">Search</Link>
+          <Link to="/chat">Chat</Link>
         </div>
         <section className="rounded-xl text-center">
           <h1 className="text-3xl font-semibold mb-2">MY STORE</h1>

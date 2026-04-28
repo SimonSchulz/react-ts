@@ -5,3 +5,6 @@ export const QUERY_KEYS = {
   CATEGORIES: 'categories',
   ME: 'me'
 } as const
+
+export const CHAT_WS_URL = 'wss://simplechat-phc3.onrender.com'
+export const CHAT_HTTP_URL = 'https://simplechat-phc3.onrender.com'

@@ -5,6 +5,8 @@
 
 https://react-ts-two-lime.vercel.app/
 
+wss://simplechat-phc3.onrender.com
+
 ## 🧠 Tech Stack
 
 * React
