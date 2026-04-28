@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import { getProducts } from '../products'
-import { QUERY_KEYS } from '../../config/constants.ts'
+import { getProducts } from '../products.ts'
 
-export const useProducts = (page: number, category?: string) => {
+export const useProducts = (
+  page: number,
+  category?: string,
+  search?: string
+) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.PRODUCTS, page, category],
-    queryFn: () => getProducts(page, category),
+    queryKey: ['products', page, category, search],
+    queryFn: () => getProducts(page, category, search),
     placeholderData: (prev) => prev
   })
 }

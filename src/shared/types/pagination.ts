@@ -1,6 +1,6 @@
 export type PaginationProps = {
   page: number
-  hasNext: boolean
-  hasPrev: boolean
+  total: number
+  limit: number
   onChange: (page: number) => void
 }

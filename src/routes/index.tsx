@@ -5,7 +5,7 @@ import { ProductsGridSkeleton } from '../shared/ui/ProductsGridSkeleton'
 import { useState } from 'react'
 import { CategoriesList } from '../shared/ui/CategoriesList.tsx'
 import { Pagination } from '../shared/ui/Pagination.tsx'
-import { PRODUCTS_LIMIT, QUERY_KEYS } from '../shared/config/constants.ts'
+import { PAGINATION_LIMIT, QUERY_KEYS } from '../shared/config/constants.ts'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
 import { queryClient } from '../shared/app/queryClient.ts'
 export const Route = createFileRoute('/')({
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
-  const limit = PRODUCTS_LIMIT
+  const limit = PAGINATION_LIMIT
   const [category, setCategory] = useState<string | undefined>()
   const [page, setPage] = useState(1)
   const { data, isLoading, isError, error } = useProducts(page, category)

@@ -1,11 +1,11 @@
-type Props = {
-  page: number
-  total: number
-  limit: number
-  onChange: (page: number) => void
-}
+import type { PaginationProps } from '../types/pagination.ts'
 
-export const Pagination = ({ page, total, limit, onChange }: Props) => {
+export const Pagination = ({
+  page,
+  total,
+  limit,
+  onChange
+}: PaginationProps) => {
   const totalPages = Math.ceil(total / limit)
 
   if (totalPages <= 1) return null

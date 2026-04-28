@@ -5,3 +5,7 @@ export type Product = {
   thumbnail: string
   description?: string
 }
+export type ProductResponse = {
+  products: Product[]
+  total: number
+}

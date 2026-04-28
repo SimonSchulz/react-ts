@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 type BtnProps = {
   active?: boolean
   children: React.ReactNode

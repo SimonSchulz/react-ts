@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type SubmitEventHandler, useState } from 'react'
 import { useAuthStore } from '../store/auth'
 import { useLogin } from '../api/hooks/useLogin'
 import { setUser } from '../lib/user'
@@ -14,7 +14,7 @@ export const LoginModal = () => {
 
   if (!isLoginOpen) return null
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
 
     mutate(

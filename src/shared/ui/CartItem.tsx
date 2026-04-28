@@ -1,8 +1,11 @@
 import { useCartStore } from '../store/cart'
-import type { CartItem as CartItemType } from '../types/cart.ts'
+import type { CartItem as CartItemType } from '../types/cart'
 
 export const CartItem = ({ item }: { item: CartItemType }) => {
-  const { addToCart, decreaseQuantity } = useCartStore()
+  const addToCart = useCartStore((state) => state.addToCart)
+  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
+  const removeFromCart = useCartStore((state) => state.removeFromCart)
+
   return (
     <div className="flex items-center gap-4 border p-4 rounded-xl">
       <img
@@ -17,10 +20,26 @@ export const CartItem = ({ item }: { item: CartItemType }) => {
       </div>
 
       <div className="flex items-center gap-2">
-        <button onClick={() => decreaseQuantity(item.id)}>-</button>
+        <button
+          onClick={() => decreaseQuantity(item.id)}
+          className="border px-2"
+        >
+          -
+        </button>
+
         <span>{item.quantity}</span>
-        <button onClick={() => addToCart(item)}>+</button>
+
+        <button onClick={() => addToCart(item)} className="border px-2">
+          +
+        </button>
       </div>
+
+      <button
+        onClick={() => removeFromCart(item.id)}
+        className="text-sm text-gray-400 hover:text-black"
+      >
+        Remove
+      </button>
 
       <div className="w-20 text-right">
         ${(item.price * item.quantity).toFixed(2)}
