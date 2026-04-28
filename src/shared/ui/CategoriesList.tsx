@@ -1,5 +1,6 @@
 import { useCategories } from '../api/hooks/useCategories'
-import { CategoryButton } from './CategoryButton.tsx'
+import { CategoryButton } from './CategoryButton'
+import { useRef } from 'react'
 
 type Props = {
   selected?: string
@@ -8,6 +9,33 @@ type Props = {
 
 export const CategoriesList = ({ selected, onSelect }: Props) => {
   const { data, isLoading } = useCategories()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    category?: string
+  ) => {
+    onSelect(category)
+
+    const container = containerRef.current
+    const el = e.currentTarget
+
+    if (!container || !el) return
+
+    const containerRect = container.getBoundingClientRect()
+    const elRect = el.getBoundingClientRect()
+
+    const offset =
+      elRect.left -
+      containerRect.left -
+      containerRect.width / 2 +
+      elRect.width / 2
+
+    container.scrollBy({
+      left: offset,
+      behavior: 'smooth'
+    })
+  }
 
   if (isLoading) {
     return (
@@ -23,8 +51,14 @@ export const CategoriesList = ({ selected, onSelect }: Props) => {
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-      <CategoryButton active={!selected} onClick={() => onSelect(undefined)}>
+    <div
+      ref={containerRef}
+      className="flex gap-2 overflow-x-auto pb-2 no-scrollbar"
+    >
+      <CategoryButton
+        active={!selected}
+        onClick={(e) => handleClick(e, undefined)}
+      >
         All
       </CategoryButton>
 
@@ -32,7 +66,7 @@ export const CategoriesList = ({ selected, onSelect }: Props) => {
         <CategoryButton
           key={cat.slug}
           active={selected === cat.slug}
-          onClick={() => onSelect(cat.slug)}
+          onClick={(e) => handleClick(e, cat.slug)}
         >
           {cat.name}
         </CategoryButton>

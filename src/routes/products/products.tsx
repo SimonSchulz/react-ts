@@ -1,7 +1,6 @@
 import { useProducts } from '../../shared/api/hooks/useProducts'
 import { ProductsGrid } from '../../shared/ui/ProductsGrid'
 import { ProductsGridSkeleton } from '../../shared/ui/ProductsGridSkeleton'
-import { CategoriesList } from '../../shared/ui/CategoriesList'
 import { Pagination } from '../../shared/ui/Pagination'
 import { useState } from 'react'
 import { useDebounce } from '../../shared/lib/useDebounce'
@@ -11,16 +10,11 @@ import { queryClient } from '../../shared/app/queryClient'
 
 export default function ProductsPage() {
   const [page, setPage] = useState(1)
-  const [category, setCategory] = useState<string | undefined>()
   const [search, setSearch] = useState('')
 
   const debounced = useDebounce(search, 400)
 
-  const { data, isLoading, isError, error } = useProducts(
-    page,
-    category,
-    debounced
-  )
+  const { data, isLoading, isError, error } = useProducts(page, debounced)
 
   if (isError) {
     return (
@@ -43,14 +37,6 @@ export default function ProductsPage() {
         }}
         placeholder="Search products..."
         className="w-full border rounded-lg px-4 py-2"
-      />
-
-      <CategoriesList
-        selected={category}
-        onSelect={(cat) => {
-          setCategory(cat)
-          setPage(1)
-        }}
       />
 
       <div className="min-h-[600px]">

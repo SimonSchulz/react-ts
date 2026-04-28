@@ -1,23 +1,16 @@
-import * as React from 'react'
-
-type BtnProps = {
+type Props = {
   active?: boolean
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   children: React.ReactNode
-  onClick: () => void
 }
 
-export const CategoryButton = ({ active, children, onClick }: BtnProps) => {
+export const CategoryButton = ({ active, onClick, children }: Props) => {
   return (
     <button
       onClick={onClick}
-      className={`
-        whitespace-nowrap px-4 py-1.5 rounded-full text-sm border transition
-        ${
-          active
-            ? 'bg-black text-white border-black'
-            : 'text-gray-600 border-gray-300 hover:bg-black hover:text-white'
-        }
-      `}
+      className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition ${
+        active ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'
+      }`}
     >
       {children}
     </button>
