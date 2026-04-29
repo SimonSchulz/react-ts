@@ -7,14 +7,27 @@ import { ErrorBoundary } from '../../shared/ui/ErrorBoundary'
 import { queryClient } from '../../shared/app/queryClient'
 import { ProductsGridSkeleton } from '../../shared/ui/product/ProductsGridSkeleton.tsx'
 import { ProductsGrid } from '../../shared/ui/product/ProductsGrid.tsx'
+import { useNavigate, useSearch } from '@tanstack/react-router'
+import type { SearchParams } from '../../shared/types/searchParams.ts'
 
 export default function ProductsPage() {
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState('')
+  const navigate = useNavigate()
+  const { page = 1 } = useSearch({ from: '/products' })
 
+  const [search, setSearch] = useState('')
   const debounced = useDebounce(search, 400)
 
   const { data, isLoading, isError, error } = useProducts(page, debounced)
+
+  const handlePageChange = (p: number) => {
+    navigate({
+      to: '/products',
+      search: (prev: SearchParams) => ({
+        ...prev,
+        page: p
+      })
+    })
+  }
 
   if (isError) {
     return (
@@ -33,7 +46,7 @@ export default function ProductsPage() {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value)
-          setPage(1)
+          handlePageChange(1)
         }}
         placeholder="Search products..."
         className="w-full border rounded-lg px-4 py-2"
@@ -51,7 +64,7 @@ export default function ProductsPage() {
         page={page}
         total={data?.total || 0}
         limit={PAGINATION_LIMIT}
-        onChange={setPage}
+        onChange={handlePageChange}
       />
     </div>
   )
