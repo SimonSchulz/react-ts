@@ -10,4 +10,5 @@ export type CartState = {
   removeFromCart: (id: string) => void
   decreaseQuantity: (id: string) => void
   clearCart: () => void
+  isInCart: (id: string) => boolean
 }

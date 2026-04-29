@@ -14,7 +14,7 @@ export default function CartPage() {
   }
 
   if (items.length === 0) {
-    return <div className="text-center mt-10">Cart is empty</div>
+    return <div className="text-center mt-10 text-2xl">Your cart is empty</div>
   }
 
   return (

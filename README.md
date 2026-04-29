@@ -3,10 +3,16 @@
 
 ## 🚀 Deployment
 
+**Frontend:**  
 https://react-ts-two-lime.vercel.app/
 
+**Chat (WebSocket):**  
 wss://simplechat-phc3.onrender.com
 
+**Chat (HTTP keep-alive):**  
+https://simplechat-phc3.onrender.com
+
+---
 ## 🧠 Tech Stack
 
 * React

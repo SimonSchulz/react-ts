@@ -1,10 +1,9 @@
 import { Link } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
-import * as React from 'react'
 import type { Product } from '../../types/product.ts'
-import { useCartStore } from '../../store/cart.ts'
 import { QUERY_KEYS } from '../../config/constants.ts'
 import { getProductById } from '../../api/product.ts'
+import { AddToCartControl } from '../AddToCartControl.tsx'
 
 type Props = {
   product: Product
@@ -12,14 +11,7 @@ type Props = {
 }
 
 export const ProductCard = ({ product, priority }: Props) => {
-  const addToCart = useCartStore((state) => state.addToCart)
   const queryClient = useQueryClient()
-
-  const handleAdd = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    addToCart(product)
-  }
 
   const handlePrefetch = () => {
     queryClient.prefetchQuery({
@@ -32,36 +24,33 @@ export const ProductCard = ({ product, priority }: Props) => {
   }
 
   return (
-    <Link
-      to="/products/$id"
-      params={{ id: String(product.id) }}
-      onMouseEnter={handlePrefetch}
-      className="border border-gray-200 rounded-xl p-3 flex flex-col gap-2 hover:scale-[1.02] will-change-transform transition"
-    >
-      <div className="aspect-square overflow-hidden rounded-lg">
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
-          decoding="async"
-          width={300}
-          height={300}
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
-        <span className="text-base font-semibold">${product.price}</span>
-      </div>
-
-      <button
-        onClick={handleAdd}
-        className="mt-auto bg-black text-white py-2 rounded hover:opacity-90 transition"
+    <div className="border border-gray-200 rounded-xl p-3 flex flex-col gap-3 hover:scale-[1.02] transition">
+      <Link
+        to="/products/$id"
+        params={{ id: String(product.id) }}
+        onMouseEnter={handlePrefetch}
+        className="flex flex-col gap-2"
       >
-        Add to cart
-      </button>
-    </Link>
+        <div className="aspect-square overflow-hidden rounded-lg">
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
+            width={300}
+            height={300}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
+          <span className="text-base font-semibold">${product.price}</span>
+        </div>
+      </Link>
+
+      <AddToCartControl product={product} />
+    </div>
   )
 }

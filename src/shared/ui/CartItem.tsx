@@ -1,50 +1,76 @@
+import { Link } from '@tanstack/react-router'
 import { useCartStore } from '../store/cart'
-import type { CartItem as CartItemType } from '../types/cart'
+import type { CartItem as Item } from '../types/cart'
 
-export const CartItem = ({ item }: { item: CartItemType }) => {
-  const addToCart = useCartStore((state) => state.addToCart)
-  const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
-  const removeFromCart = useCartStore((state) => state.removeFromCart)
+type Props = {
+  item: Item
+}
+
+export const CartItem = ({ item }: Props) => {
+  const remove = useCartStore((s) => s.removeFromCart)
+  const decrease = useCartStore((s) => s.decreaseQuantity)
+  const add = useCartStore((s) => s.addToCart)
 
   return (
-    <div className="flex items-center gap-4 border p-4 rounded-xl">
-      <img
-        src={item.thumbnail}
-        alt={item.title}
-        loading="lazy"
-        decoding="async"
-        className="w-20 h-20 object-cover rounded"
-      />
+    <div className="grid grid-cols-[80px_1fr_auto] gap-4 items-center border rounded-xl p-4 bg-white shadow-sm">
+      <Link to="/products/$id" params={{ id: String(item.id) }}>
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          className="w-20 h-20 object-cover rounded-lg"
+        />
+      </Link>
 
-      <div className="flex-1">
-        <h3>{item.title}</h3>
-        <p className="text-gray-500">${item.price}</p>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => decreaseQuantity(item.id)}
-          className="border px-2"
+      <div className="flex flex-col gap-2">
+        <Link
+          to="/products/$id"
+          params={{ id: String(item.id) }}
+          className="font-medium hover:underline"
         >
-          -
-        </button>
+          {item.title}
+        </Link>
 
-        <span>{item.quantity}</span>
-
-        <button onClick={() => addToCart(item)} className="border px-2">
-          +
-        </button>
+        <div className="text-sm text-gray-500">${item.price} per item</div>
       </div>
 
-      <button
-        onClick={() => removeFromCart(item.id)}
-        className="text-sm text-gray-400 hover:text-black"
-      >
-        Remove
-      </button>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => decrease(item.id)}
+            className="w-8 h-8 border rounded flex items-center justify-center hover:bg-gray-100"
+          >
+            -
+          </button>
 
-      <div className="w-20 text-right">
-        ${(item.price * item.quantity).toFixed(2)}
+          <span className="w-8 text-center font-medium tabular-nums">
+            {item.quantity}
+          </span>
+
+          <button
+            onClick={() =>
+              add({
+                id: item.id,
+                title: item.title,
+                price: item.price,
+                thumbnail: item.thumbnail
+              })
+            }
+            className="w-8 h-8 border rounded flex items-center justify-center hover:bg-gray-100"
+          >
+            +
+          </button>
+        </div>
+
+        <div className="w-24 text-right font-semibold tabular-nums">
+          ${(item.price * item.quantity).toFixed(2)}
+        </div>
+
+        <button
+          onClick={() => remove(item.id)}
+          className="w-16 text-xs text-red-500 hover:text-red-700 text-right"
+        >
+          Remove
+        </button>
       </div>
     </div>
   )

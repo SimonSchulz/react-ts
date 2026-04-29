@@ -16,7 +16,7 @@ const saveCart = (items: CartItem[]) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
 }
 
-export const useCartStore = create<CartState>((set) => ({
+export const useCartStore = create<CartState>((set, get) => ({
   items: loadCart(),
 
   addToCart: (product) =>
@@ -54,5 +54,7 @@ export const useCartStore = create<CartState>((set) => ({
     set(() => {
       saveCart([])
       return { items: [] }
-    })
+    }),
+
+  isInCart: (id) => get().items.some((i) => i.id === id)
 }))

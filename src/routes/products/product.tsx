@@ -1,32 +1,18 @@
 import { useProduct } from '../../shared/api/hooks/useProduct'
-import { useCartStore } from '../../shared/store/cart'
 import { ErrorBoundary } from '../../shared/ui/ErrorBoundary'
 import { queryClient } from '../../shared/app/queryClient'
 import { QUERY_KEYS } from '../../shared/config/constants'
 import { useParams } from '@tanstack/react-router'
 import { useState } from 'react'
 import type { Review } from '../../shared/types/product'
+import { AddToCartControl } from '../../shared/ui/AddToCartControl.tsx'
 
 export default function ProductPage() {
   const { id } = useParams({ from: '/products/$id' })
   const { data, isLoading, isError } = useProduct(id)
-
-  const addToCart = useCartStore((s) => s.addToCart)
-
   const [activeImage, setActiveImage] = useState<string | null>(null)
 
-  if (isLoading) {
-    return (
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 animate-pulse">
-        <div className="bg-gray-200 h-96 rounded-xl" />
-        <div className="flex flex-col gap-4">
-          <div className="h-6 bg-gray-200 w-1/2" />
-          <div className="h-6 bg-gray-200 w-1/4" />
-          <div className="h-20 bg-gray-200" />
-        </div>
-      </div>
-    )
-  }
+  if (isLoading) return <div className="p-6">Loading...</div>
 
   if (isError) {
     return (
@@ -40,8 +26,8 @@ export default function ProductPage() {
 
   if (!data) return <div className="p-6">Not found</div>
 
-  const isLowStock = data.stock < 10
   const image = activeImage || data.thumbnail
+  const isLowStock = data.stock < 10
 
   return (
     <div className="max-w-6xl mx-auto p-6 flex flex-col gap-10">
@@ -73,16 +59,10 @@ export default function ProductPage() {
         <div className="flex flex-col gap-5">
           <h1 className="text-2xl font-semibold">{data.title}</h1>
 
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-3">
             <span className="text-2xl font-bold text-green-600">
               ${data.price}
             </span>
-
-            {data.discountPercentage && (
-              <span className="text-sm text-red-500">
-                -{data.discountPercentage}%
-              </span>
-            )}
 
             <span className="bg-yellow-100 px-3 py-1 rounded text-sm">
               ⭐ {data.rating.toFixed(1)}
@@ -96,21 +76,7 @@ export default function ProductPage() {
           >
             {isLowStock ? `Low stock (${data.stock})` : data.availabilityStatus}
           </div>
-
-          <button
-            onClick={() =>
-              addToCart({
-                id: data.id,
-                title: data.title,
-                price: data.price,
-                thumbnail: data.thumbnail
-              })
-            }
-            className="bg-black text-white py-3 rounded-lg hover:opacity-90"
-          >
-            Add to cart
-          </button>
-
+          <AddToCartControl product={data} />
           <p className="text-gray-600 text-sm">{data.description}</p>
 
           <div className="text-sm text-gray-500">
@@ -119,7 +85,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {data.reviews && data.reviews.length > 0 && (
+      {data.reviews && data.reviews?.length > 0 && (
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-semibold">Reviews</h2>
 
