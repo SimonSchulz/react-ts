@@ -76,7 +76,7 @@ export default function ProductsPage() {
             actionText="Reset search"
             onAction={() =>
               navigate({
-                to: '/products',
+                to: '/products/',
                 search: () => ({ page: 1, q: '' })
               })
             }
