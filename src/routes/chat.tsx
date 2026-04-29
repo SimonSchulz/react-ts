@@ -1,17 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useChat } from '../shared/lib/useChat'
+import { getUser } from '../shared/lib/user.ts'
 
 export const Route = createFileRoute('/chat')({
   component: ChatPage
 })
-
 function ChatPage() {
-  const { messages, sendMessage, sendTyping, isTyping } = useChat('room-1')
-
+  const user = getUser()
+  const { messages, sendMessage, isTyping } = useChat(user?.username || 'Guest')
   const [text, setText] = useState('')
   const ref = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
@@ -22,40 +21,34 @@ function ChatPage() {
         {messages.map((m, i) => {
           if (m.kind === 'system') {
             return (
-              <div
-                key={i}
-                className="bg-gray-200 self-center text-sm px-3 py-2 rounded-lg"
-              >
+              <div key={i} className="text-center text-sm text-gray-400">
                 {m.text}
               </div>
             )
           }
-
-          if (m.kind === 'user') {
+          if (m.kind === 'bot') {
             return (
               <div
                 key={i}
-                className="bg-gray-100 self-start px-3 py-2 rounded-lg max-w-[70%]"
+                className="self-start bg-gray-100 px-3 py-2 rounded-lg"
               >
                 {m.text}
               </div>
             )
           }
-
-          if (m.kind === 'me') {
-            return (
-              <div
-                key={i}
-                className="bg-black text-white self-end px-3 py-2 rounded-lg max-w-[70%]"
-              >
-                {m.text}
-              </div>
-            )
-          }
-          return null
+          return (
+            <div
+              key={i}
+              className="self-end bg-black text-white px-3 py-2 rounded-lg"
+            >
+              {m.text}
+            </div>
+          )
         })}
 
-        {isTyping && <div className="text-xs text-gray-400">typing...</div>}
+        {isTyping && (
+          <div className="text-xs text-gray-400 self-start">typing...</div>
+        )}
 
         <div ref={ref} />
       </div>
@@ -63,10 +56,7 @@ function ChatPage() {
       <div className="flex gap-2">
         <input
           value={text}
-          onChange={(e) => {
-            setText(e.target.value)
-            sendTyping()
-          }}
+          onChange={(e) => setText(e.target.value)}
           className="flex-1 border px-3 py-2"
         />
 
