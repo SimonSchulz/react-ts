@@ -43,10 +43,18 @@ export const ProductCard = ({ product, priority }: Props) => {
             className="w-full h-full object-cover"
           />
         </div>
-
         <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
-          <span className="text-base font-semibold">${product.price}</span>
+          <h3 className="text-sm font-medium overflow-hidden line-clamp-1">
+            {product.title}
+          </h3>
+          <div className="flex justify-between gap-1">
+            <span className="text-base font-semibold">${product.price}</span>
+            <span className="text-base text-gray-500">
+              {(product.stock ?? 0 > 0)
+                ? `Stock: ${product.stock}`
+                : 'Out of stock'}
+            </span>
+          </div>
         </div>
       </Link>
 

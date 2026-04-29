@@ -27,7 +27,7 @@ export default function ProductPage() {
   if (!data) return <div className="p-6">Not found</div>
 
   const image = activeImage || data.thumbnail
-  const isLowStock = data.stock < 10
+  const isLowStock = data.stock < 5
 
   return (
     <div className="max-w-6xl mx-auto p-6 flex flex-col gap-10">
@@ -68,13 +68,20 @@ export default function ProductPage() {
               ⭐ {data.rating.toFixed(1)}
             </span>
           </div>
-
           <div
             className={`text-sm px-3 py-1 rounded w-fit ${
-              isLowStock ? 'bg-red-100 text-red-600' : 'bg-gray-100'
+              data.stock === 0
+                ? 'bg-gray-200 text-gray-500'
+                : isLowStock
+                  ? 'bg-red-100 text-red-600'
+                  : 'bg-green-100 text-green-600'
             }`}
           >
-            {isLowStock ? `Low stock (${data.stock})` : data.availabilityStatus}
+            {data.stock === 0
+              ? 'Out of stock'
+              : isLowStock
+                ? `Low stock (${data.stock})`
+                : `In stock (${data.stock})`}
           </div>
           <AddToCartControl product={data} />
           <p className="text-gray-600 text-sm">{data.description}</p>

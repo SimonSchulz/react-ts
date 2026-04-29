@@ -12,11 +12,15 @@ export const AddToCartControl = ({ product }: Props) => {
 
   const item = items.find((i) => i.id === product.id)
 
+  const stock = product.stock ?? Infinity
+  const quantity = item?.quantity || 0
+
   if (!item) {
     return (
       <button
         onClick={() => add(product)}
-        className="bg-black text-white px-4 py-2 rounded-lg w-full"
+        disabled={stock === 0}
+        className="bg-black text-white px-4 py-2 rounded-lg w-full disabled:opacity-50"
       >
         Add to cart
       </button>
@@ -24,17 +28,23 @@ export const AddToCartControl = ({ product }: Props) => {
   }
 
   return (
-    <div className="flex items-center gap-2 mx-auto">
+    <div className="flex items-center gap-2">
       <button
         onClick={() => decrease(product.id)}
-        className="border px-3 py-1 rounded"
+        className="w-8 h-8 border rounded flex items-center justify-center hover:bg-gray-100"
       >
         -
       </button>
 
-      <span className="min-w-[20px] text-center">{item.quantity}</span>
+      <span className="w-8 text-center font-medium tabular-nums">
+        {quantity}
+      </span>
 
-      <button onClick={() => add(product)} className="border px-3 py-1 rounded">
+      <button
+        onClick={() => add(product)}
+        disabled={quantity >= stock}
+        className="w-8 h-8 border rounded flex items-center justify-center hover:bg-gray-100 disabled:opacity-50"
+      >
         +
       </button>
     </div>

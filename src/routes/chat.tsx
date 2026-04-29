@@ -23,7 +23,7 @@ function ChatPage() {
   }, [messages, isTyping])
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-50">
+    <div className="flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-2xl h-[80vh] flex flex-col border rounded-xl bg-white shadow">
         <ChatHeader isConnected={isConnected} onClear={clearHistory} />
 

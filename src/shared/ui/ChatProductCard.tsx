@@ -1,12 +1,11 @@
-import { useCartStore } from '../store/cart'
 import type { Product } from '../types/product.ts'
+import { AddToCartControl } from './AddToCartControl.tsx'
 
 type Props = {
   product: Product
 }
 
 export const ChatProductCard = ({ product }: Props) => {
-  const addToCart = useCartStore((s) => s.addToCart)
   const isLowStock = product.stock !== undefined && product.stock < 10
   return (
     <div className="self-start w-full max-w-[75%] border rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition flex flex-col gap-3">
@@ -48,17 +47,7 @@ export const ChatProductCard = ({ product }: Props) => {
       {product.returnPolicy && (
         <div className="text-xs text-gray-400">{product.returnPolicy}</div>
       )}
-      <button
-        onClick={() =>
-          addToCart({
-            ...product,
-            price: product.price || 0
-          })
-        }
-        className="mt-2 bg-black text-white text-sm py-2 rounded hover:opacity-90"
-      >
-        Add to cart
-      </button>
+      <AddToCartControl product={product} />
     </div>
   )
 }
