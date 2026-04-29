@@ -6,17 +6,31 @@ import { getUser } from '../shared/lib/user.ts'
 export const Route = createFileRoute('/chat')({
   component: ChatPage
 })
+
 function ChatPage() {
   const user = getUser()
-  const { messages, sendMessage, isTyping } = useChat(user?.username || 'Guest')
+
+  const { messages, sendMessage, isTyping, isConnected } = useChat(
+    user?.username || 'Guest'
+  )
+
   const [text, setText] = useState('')
   const ref = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-4 h-[80vh]">
+      <div className="text-sm">
+        {isConnected ? (
+          <span className="text-green-600">● Connected</span>
+        ) : (
+          <span className="text-red-500">● Connecting...</span>
+        )}
+      </div>
+
       <div className="flex-1 border p-4 overflow-y-auto flex flex-col gap-2">
         {messages.map((m, i) => {
           if (m.kind === 'system') {
@@ -26,6 +40,7 @@ function ChatPage() {
               </div>
             )
           }
+
           if (m.kind === 'bot') {
             return (
               <div
@@ -36,6 +51,7 @@ function ChatPage() {
               </div>
             )
           }
+
           return (
             <div
               key={i}
@@ -54,10 +70,27 @@ function ChatPage() {
       </div>
 
       <div className="flex gap-2">
-        <input
+        <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 border px-3 py-2"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+
+              if (!text.trim()) return
+
+              sendMessage(text)
+              setText('')
+            }
+          }}
+          onInput={(e) => {
+            const el = e.currentTarget
+            el.style.height = 'auto'
+            el.style.height = el.scrollHeight + 'px'
+          }}
+          disabled={!isConnected}
+          rows={1}
+          className="flex-1 border px-3 py-2 resize-none disabled:opacity-50"
         />
 
         <button
@@ -66,7 +99,8 @@ function ChatPage() {
             sendMessage(text)
             setText('')
           }}
-          className="bg-black text-white px-4"
+          disabled={!isConnected}
+          className="bg-black text-white px-4 disabled:opacity-50"
         >
           Send
         </button>

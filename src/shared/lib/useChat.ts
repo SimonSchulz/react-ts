@@ -11,7 +11,8 @@ export const useChat = (username: string) => {
 
   const [messages, setMessages] = useState<Msg[]>([])
   const [isTyping, setIsTyping] = useState(false)
-  console.log(messages)
+  const [isConnected, setIsConnected] = useState(false)
+
   const connect = async () => {
     try {
       await fetch(CHAT_HTTP_URL)
@@ -22,6 +23,8 @@ export const useChat = (username: string) => {
     wsRef.current = ws
 
     ws.onopen = () => {
+      setIsConnected(true)
+
       ws.send(
         JSON.stringify({
           type: 'init',
@@ -47,7 +50,11 @@ export const useChat = (username: string) => {
       }
     }
 
-    ws.onclose = () => setTimeout(connect, 2000)
+    ws.onclose = () => {
+      setIsConnected(false)
+      setTimeout(connect, 2000)
+    }
+
     ws.onerror = () => ws.close()
   }
 
@@ -69,5 +76,5 @@ export const useChat = (username: string) => {
     setMessages((p) => [...p, { kind: 'me', text }])
   }
 
-  return { messages, sendMessage, isTyping }
+  return { messages, sendMessage, isTyping, isConnected }
 }
