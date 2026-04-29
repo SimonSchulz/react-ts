@@ -12,7 +12,7 @@ import type { SearchParams } from '../../shared/types/searchParams.ts'
 
 export default function ProductsPage() {
   const navigate = useNavigate()
-  const { page = 1 } = useSearch({ from: '/products/' })
+  const { page = 1 } = useSearch({ from: '/products' })
 
   const [search, setSearch] = useState('')
   const debounced = useDebounce(search, 400)
