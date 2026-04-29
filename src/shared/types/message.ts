@@ -1,9 +1,7 @@
-export type ServerMsg =
-  | { type: 'message'; payload: { text: string; user: string } }
-  | { type: 'system'; payload: { text: string } }
-  | { type: 'typing'; payload: { user: string } }
+import type { Product } from './product.ts'
 
-export type ChatMsg =
-  | { kind: 'user'; text: string; user: string }
-  | { kind: 'system'; text: string }
+export type Msg =
   | { kind: 'me'; text: string }
+  | { kind: 'bot'; text: string }
+  | { kind: 'system'; text: string }
+  | { kind: 'product'; data: Product }

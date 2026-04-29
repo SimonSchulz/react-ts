@@ -1,7 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useChat } from '../shared/lib/useChat'
-import { getUser } from '../shared/lib/user.ts'
+import { getUser } from '../shared/lib/user'
+import { ChatHeader } from '../shared/ui/chat/ChatHeader.tsx'
+import { ChatMain } from '../shared/ui/chat/ChatMain.tsx'
+import { ChatInput } from '../shared/ui/chat/ChatInput.tsx'
 
 export const Route = createFileRoute('/chat')({
   component: ChatPage
@@ -10,100 +13,28 @@ export const Route = createFileRoute('/chat')({
 function ChatPage() {
   const user = getUser()
 
-  const { messages, sendMessage, isTyping, isConnected } = useChat(
-    user?.username || 'Guest'
-  )
-
-  const [text, setText] = useState('')
-  const ref = useRef<HTMLDivElement>(null)
-
+  const { messages, sendMessage, isTyping, isConnected, clearHistory } =
+    useChat(user?.username || 'Guest')
+  const listRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    const el = listRef.current
+    if (!el) return
+    el.scrollTop = el.scrollHeight
+  }, [messages, isTyping])
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col gap-4 h-[80vh]">
-      <div className="text-sm">
-        {isConnected ? (
-          <span className="text-green-600">● Connected</span>
-        ) : (
-          <span className="text-red-500">● Connecting...</span>
-        )}
-      </div>
+    <div className="h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-2xl h-[80vh] flex flex-col border rounded-xl bg-white shadow">
+        <ChatHeader isConnected={isConnected} onClear={clearHistory} />
 
-      <div className="flex-1 border p-4 overflow-y-auto flex flex-col gap-2">
-        {messages.map((m, i) => {
-          if (m.kind === 'system') {
-            return (
-              <div key={i} className="text-center text-sm text-gray-400">
-                {m.text}
-              </div>
-            )
-          }
-
-          if (m.kind === 'bot') {
-            return (
-              <div
-                key={i}
-                className="self-start bg-gray-100 px-3 py-2 rounded-lg"
-              >
-                {m.text}
-              </div>
-            )
-          }
-
-          return (
-            <div
-              key={i}
-              className="self-end bg-black text-white px-3 py-2 rounded-lg"
-            >
-              {m.text}
-            </div>
-          )
-        })}
-
-        {isTyping && (
-          <div className="text-xs text-gray-400 self-start">typing...</div>
-        )}
-
-        <div ref={ref} />
-      </div>
-
-      <div className="flex gap-2">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-
-              if (!text.trim()) return
-
-              sendMessage(text)
-              setText('')
-            }
-          }}
-          onInput={(e) => {
-            const el = e.currentTarget
-            el.style.height = 'auto'
-            el.style.height = el.scrollHeight + 'px'
-          }}
-          disabled={!isConnected}
-          rows={1}
-          className="flex-1 border px-3 py-2 resize-none disabled:opacity-50"
+        <ChatMain
+          messages={messages}
+          isTyping={isTyping}
+          username={user?.username}
+          listRef={listRef}
         />
 
-        <button
-          onClick={() => {
-            if (!text.trim()) return
-            sendMessage(text)
-            setText('')
-          }}
-          disabled={!isConnected}
-          className="bg-black text-white px-4 disabled:opacity-50"
-        >
-          Send
-        </button>
+        <ChatInput onSend={sendMessage} disabled={!isConnected} />
       </div>
     </div>
   )

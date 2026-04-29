@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { CHAT_HTTP_URL, CHAT_WS_URL } from '../config/constants'
+import type { Msg } from '../types/message.ts'
 
-type Msg =
-  | { kind: 'me'; text: string }
-  | { kind: 'bot'; text: string }
-  | { kind: 'system'; text: string }
+const getKey = (username: string) => `chat:${username}`
 
 export const useChat = (username: string) => {
   const wsRef = useRef<WebSocket | null>(null)
@@ -13,10 +11,21 @@ export const useChat = (username: string) => {
   const [isTyping, setIsTyping] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
 
+  useEffect(() => {
+    const saved = localStorage.getItem(getKey(username))
+    if (saved) {
+      setMessages(JSON.parse(saved))
+    }
+  }, [username])
+
+  useEffect(() => {
+    localStorage.setItem(getKey(username), JSON.stringify(messages))
+  }, [messages, username])
+
   const connect = async () => {
     try {
       await fetch(CHAT_HTTP_URL)
-      await new Promise((r) => setTimeout(r, 1000))
+      await new Promise((r) => setTimeout(r, 500))
     } catch {}
 
     const ws = new WebSocket(CHAT_WS_URL)
@@ -43,6 +52,11 @@ export const useChat = (username: string) => {
       if (data.type === 'bot') {
         setIsTyping(false)
         setMessages((p) => [...p, { kind: 'bot', text: data.payload.text }])
+      }
+
+      if (data.type === 'product') {
+        setIsTyping(false)
+        setMessages((p) => [...p, { kind: 'product', data: data.payload }])
       }
 
       if (data.type === 'typing') {
@@ -76,5 +90,10 @@ export const useChat = (username: string) => {
     setMessages((p) => [...p, { kind: 'me', text }])
   }
 
-  return { messages, sendMessage, isTyping, isConnected }
+  const clearHistory = () => {
+    setMessages([])
+    localStorage.removeItem(getKey(username))
+  }
+
+  return { messages, sendMessage, isTyping, isConnected, clearHistory }
 }

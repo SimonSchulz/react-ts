@@ -1,13 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useProducts } from '../shared/api/hooks/useProducts'
-import { ProductsGrid } from '../shared/ui/ProductsGrid'
-import { ProductsGridSkeleton } from '../shared/ui/ProductsGridSkeleton'
 import { useState } from 'react'
-import { CategoriesList } from '../shared/ui/CategoriesList'
 import { Pagination } from '../shared/ui/Pagination'
 import { PAGINATION_LIMIT, QUERY_KEYS } from '../shared/config/constants'
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary'
 import { queryClient } from '../shared/app/queryClient'
+import { CategoriesList } from '../shared/ui/caterory/CategoriesList.tsx'
+import { ProductsGridSkeleton } from '../shared/ui/product/ProductsGridSkeleton.tsx'
+import { ProductsGrid } from '../shared/ui/product/ProductsGrid.tsx'
 
 export const Route = createFileRoute('/')({
   component: HomePage

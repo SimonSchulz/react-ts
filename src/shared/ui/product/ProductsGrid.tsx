@@ -1,5 +1,5 @@
 import { ProductCard } from './ProductCard'
-import type { ProductResponse } from '../types/product'
+import type { ProductResponse } from '../../types/product.ts'
 
 export const ProductsGrid = ({ products }: ProductResponse) => {
   return (

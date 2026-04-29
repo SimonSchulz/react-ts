@@ -1,12 +1,12 @@
 import { useProducts } from '../../shared/api/hooks/useProducts'
-import { ProductsGrid } from '../../shared/ui/ProductsGrid'
-import { ProductsGridSkeleton } from '../../shared/ui/ProductsGridSkeleton'
 import { Pagination } from '../../shared/ui/Pagination'
 import { useState } from 'react'
 import { useDebounce } from '../../shared/lib/useDebounce'
 import { PAGINATION_LIMIT, QUERY_KEYS } from '../../shared/config/constants'
 import { ErrorBoundary } from '../../shared/ui/ErrorBoundary'
 import { queryClient } from '../../shared/app/queryClient'
+import { ProductsGridSkeleton } from '../../shared/ui/product/ProductsGridSkeleton.tsx'
+import { ProductsGrid } from '../../shared/ui/product/ProductsGrid.tsx'
 
 export default function ProductsPage() {
   const [page, setPage] = useState(1)

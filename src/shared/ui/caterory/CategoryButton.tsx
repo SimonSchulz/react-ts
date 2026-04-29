@@ -1,3 +1,6 @@
+import * as React from 'react'
+import * as React from 'react'
+
 type Props = {
   active?: boolean
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void

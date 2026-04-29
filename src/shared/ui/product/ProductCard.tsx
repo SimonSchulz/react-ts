@@ -1,10 +1,10 @@
 import { Link } from '@tanstack/react-router'
-import type { Product } from '../types/product'
-import { useCartStore } from '../store/cart'
 import { useQueryClient } from '@tanstack/react-query'
-import { QUERY_KEYS } from '../config/constants'
 import * as React from 'react'
-import { getProductById } from '../api/product.ts'
+import type { Product } from '../../types/product.ts'
+import { useCartStore } from '../../store/cart.ts'
+import { QUERY_KEYS } from '../../config/constants.ts'
+import { getProductById } from '../../api/product.ts'
 
 type Props = {
   product: Product
@@ -27,7 +27,6 @@ export const ProductCard = ({ product, priority }: Props) => {
       queryFn: () => getProductById(product.id)
     })
 
-    // 🔥 прелоад картинки (очень влияет на LCP)
     const img = new Image()
     img.src = product.thumbnail
   }

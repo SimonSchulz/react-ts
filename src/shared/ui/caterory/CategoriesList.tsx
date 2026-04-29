@@ -1,6 +1,7 @@
-import { useCategories } from '../api/hooks/useCategories'
 import { CategoryButton } from './CategoryButton'
 import { useRef } from 'react'
+import { useCategories } from '../../api/hooks/useCategories.ts'
+import * as React from 'react'
 
 type Props = {
   selected?: string
