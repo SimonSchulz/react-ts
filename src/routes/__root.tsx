@@ -1,8 +1,8 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { Header } from '../shared/ui/Header'
 import { Footer } from '../shared/ui/Footer'
 import { LoginModal } from '../shared/ui/LoginModal'
 import { Suspense } from 'react'
+import { Header } from '../shared/ui/header/Header.tsx'
 
 export const Route = createRootRoute({
   component: RootComponent
