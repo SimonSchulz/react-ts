@@ -60,7 +60,7 @@ function HomePage() {
         />
       </section>
 
-      <section className="flex flex-col gap-4 min-h-[600px]">
+      <section className="flex flex-col gap-4 min-h-150">
         {isLoading ? (
           <ProductsGridSkeleton />
         ) : (

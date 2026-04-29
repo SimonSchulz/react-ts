@@ -4,7 +4,7 @@ export const ToastContainer = () => {
   const toasts = useToastStore((s) => s.toasts)
 
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col gap-2 z-50">
+    <div className="fixed bottom-4 right-4 flex flex-col gap-2 z-50 pointer-events-none">
       {toasts.map((t) => (
         <div
           key={t.id}

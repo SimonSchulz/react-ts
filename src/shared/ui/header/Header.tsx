@@ -5,6 +5,7 @@ import { useAuthStore } from '../../store/auth'
 import * as React from 'react'
 import { MobileMenu } from './MobileMenu'
 import { ProfileMenu } from './ProfileMenu'
+import { CartPreview } from '../CartPreview.tsx'
 
 export const Header = () => {
   const { data } = useMe()
@@ -41,14 +42,18 @@ export const Header = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Link to="/cart" className="relative flex items-center">
-            <img src="/cart.svg" className="w-5 h-5" />
-            {totalCount > 0 && (
-              <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-2 min-w-[20px] text-center">
-                {totalCount}
-              </span>
-            )}
-          </Link>
+          <div className="relative group">
+            <Link to="/cart" className="relative flex items-center">
+              <img src="/cart.svg" className="w-5 h-5" alt="cart" />
+              {totalCount > 0 && (
+                <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-2 min-w-5 text-center">
+                  {totalCount}
+                </span>
+              )}
+            </Link>
+
+            <CartPreview />
+          </div>
           {currentUser ? (
             <ProfileMenu user={currentUser} />
           ) : (

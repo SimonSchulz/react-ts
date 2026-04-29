@@ -3,6 +3,7 @@ import { Footer } from '../shared/ui/Footer'
 import { LoginModal } from '../shared/ui/LoginModal'
 import { Suspense } from 'react'
 import { Header } from '../shared/ui/header/Header.tsx'
+import { ToastContainer } from '../shared/ui/ToastContainer.tsx'
 
 export const Route = createRootRoute({
   component: RootComponent
@@ -12,6 +13,7 @@ function RootComponent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <ToastContainer/>
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-4 min-h-[70vh]">
         <Suspense fallback={<div className="min-h-[60vh]" />}>
           <Outlet />

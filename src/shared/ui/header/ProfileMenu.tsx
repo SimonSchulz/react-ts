@@ -2,8 +2,10 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '../../store/auth'
 import { useQueryClient } from '@tanstack/react-query'
 import * as React from 'react'
+import type { AuthUser } from '../../types/auth.ts'
+import type { User } from '../../types/user.ts'
 
-export const ProfileMenu = ({ user }: any) => {
+export const ProfileMenu = ({ user }: { user: AuthUser | User } ) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { logout } = useAuthStore()
@@ -44,7 +46,7 @@ export const ProfileMenu = ({ user }: any) => {
         <img
           src={user.image}
           className="w-8 h-8 rounded-full border"
-          alt={user.name}
+          alt={user.username}
         />
       </button>
 
