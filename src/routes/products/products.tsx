@@ -1,6 +1,5 @@
 import { useProducts } from '../../shared/api/hooks/useProducts'
 import { Pagination } from '../../shared/ui/Pagination'
-import { useState } from 'react'
 import { useDebounce } from '../../shared/lib/useDebounce'
 import { PAGINATION_LIMIT, QUERY_KEYS } from '../../shared/config/constants'
 import { ErrorBoundary } from '../../shared/ui/ErrorBoundary'
@@ -8,6 +7,7 @@ import { queryClient } from '../../shared/app/queryClient'
 import { ProductsGridSkeleton } from '../../shared/ui/product/ProductsGridSkeleton.tsx'
 import { ProductsGrid } from '../../shared/ui/product/ProductsGrid.tsx'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { EmptyState } from '../../shared/ui/EmptyState'
 import type { SearchParams } from '../../shared/types/searchParams.ts'
 
 export default function ProductsPage() {
@@ -27,8 +27,8 @@ export default function ProductsPage() {
 
   const handlePageChange = (p: number) => {
     navigate({
-      to: '/products',
-      search: (prev) => ({
+      to: '/products/',
+      search: (prev:SearchParams) => ({
         ...prev,
         page: p
       })
@@ -37,8 +37,8 @@ export default function ProductsPage() {
 
   const handleSearchChange = (value: string) => {
     navigate({
-      to: '/products',
-      search: (prev) => ({
+      to: '/products/',
+      search: (prev:SearchParams) => ({
         ...prev,
         q: value,
         page: 1
@@ -66,11 +66,23 @@ export default function ProductsPage() {
         className="w-full border rounded-lg px-4 py-2"
       />
 
-      <div className="min-h-[600px]">
+      <div className="min-h-150">
         {isLoading ? (
           <ProductsGridSkeleton />
+        ) : !data || data.products.length === 0 ? (
+          <EmptyState
+            title="No products found"
+            description={`No results for "${q}"`}
+            actionText="Reset search"
+            onAction={() =>
+              navigate({
+                to: '/products',
+                search: () => ({ page: 1, q: '' })
+              })
+            }
+          />
         ) : (
-          <ProductsGrid products={data?.products || []} />
+          <ProductsGrid products={data.products} />
         )}
       </div>
 
