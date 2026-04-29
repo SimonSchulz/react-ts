@@ -12,19 +12,36 @@ import type { SearchParams } from '../../shared/types/searchParams.ts'
 
 export default function ProductsPage() {
   const navigate = useNavigate()
-  const { page = 1 } = useSearch({ from: '/products' })
 
-  const [search, setSearch] = useState('')
-  const debounced = useDebounce(search, 400)
+  const { page = 1, q = '' } = useSearch({
+    from: '/products/'
+  })
 
-  const { data, isLoading, isError, error } = useProducts(page, debounced)
+  const debounced = useDebounce(q, 400)
+
+  const { data, isLoading, isError, error } = useProducts(
+    page,
+    undefined,
+    debounced
+  )
 
   const handlePageChange = (p: number) => {
     navigate({
       to: '/products',
-      search: (prev: SearchParams) => ({
+      search: (prev) => ({
         ...prev,
         page: p
+      })
+    })
+  }
+
+  const handleSearchChange = (value: string) => {
+    navigate({
+      to: '/products',
+      search: (prev) => ({
+        ...prev,
+        q: value,
+        page: 1
       })
     })
   }
@@ -43,11 +60,8 @@ export default function ProductsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-8">
       <input
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value)
-          handlePageChange(1)
-        }}
+        value={q}
+        onChange={(e) => handleSearchChange(e.target.value)}
         placeholder="Search products..."
         className="w-full border rounded-lg px-4 py-2"
       />
