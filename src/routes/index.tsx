@@ -16,15 +16,11 @@ export const Route = createFileRoute('/')({
   }),
   component: HomePage
 })
-
 function HomePage() {
   const navigate = useNavigate()
   const { page = 1 } = useSearch({ from: '/' })
-
   const [category, setCategory] = useState<string | undefined>()
-
   const { data, isLoading, isError, error } = useProducts(page, category)
-
   const handlePageChange = (p: number) => {
     navigate({
       to: '/',
@@ -34,7 +30,6 @@ function HomePage() {
       })
     })
   }
-
   if (isError) {
     return (
       <ErrorBoundary
@@ -45,7 +40,6 @@ function HomePage() {
       />
     )
   }
-
   return (
     <div className="flex flex-col gap-12">
       <section className="flex flex-col gap-4">
@@ -59,21 +53,19 @@ function HomePage() {
           }}
         />
       </section>
-
       <section className="flex flex-col gap-4 min-h-150">
         {isLoading ? (
           <ProductsGridSkeleton />
         ) : (
           <ProductsGrid products={data?.products || []} />
         )}
+        <Pagination
+          page={page}
+          total={data?.total || 0}
+          limit={PAGINATION_LIMIT}
+          onChange={handlePageChange}
+        />
       </section>
-
-      <Pagination
-        page={page}
-        total={data?.total || 0}
-        limit={PAGINATION_LIMIT}
-        onChange={handlePageChange}
-      />
     </div>
   )
 }
