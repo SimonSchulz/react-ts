@@ -26,7 +26,9 @@ export const useChat = (username: string) => {
     try {
       await fetch(CHAT_HTTP_URL)
       await new Promise((r) => setTimeout(r, 500))
-    } catch {}
+    } catch {
+      throw new Error('Could not connect to chat')
+    }
 
     const ws = new WebSocket(CHAT_WS_URL)
     wsRef.current = ws
