@@ -24,7 +24,6 @@ export default function UserPage() {
         <img
           src={data.image}
           alt={data.username}
-          loading="eager"
           fetchPriority="high"
           className="w-24 h-24 rounded-full"
         />
