@@ -2,20 +2,20 @@ import { Link } from '@tanstack/react-router'
 import { useCartStore } from '../../store/cart'
 import { useMe } from '../../api/hooks/useMe'
 import { useAuthStore } from '../../store/auth'
-import * as React from 'react'
 import { MobileMenu } from './MobileMenu'
 import { ProfileMenu } from './ProfileMenu'
 import { CartPreview } from '../CartPreview.tsx'
+import { useEffect, useState } from 'react'
 
 export const Header = () => {
   const { data } = useMe()
   const { user, openLogin } = useAuthStore()
   const items = useCartStore((s) => s.items)
   const totalCount = items.reduce((a, i) => a + i.quantity, 0)
-  const [menuOpen, setMenuOpen] = React.useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const currentUser = data || user
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden'
     } else {

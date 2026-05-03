@@ -1,17 +1,17 @@
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useAuthStore } from '../../store/auth'
 import { useQueryClient } from '@tanstack/react-query'
-import * as React from 'react'
 import type { AuthUser } from '../../types/auth.ts'
 import type { User } from '../../types/user.ts'
+import { useEffect, useRef, useState } from 'react'
 
 export const ProfileMenu = ({ user }: { user: AuthUser | User } ) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { logout } = useAuthStore()
 
-  const [open, setOpen] = React.useState(false)
-  const ref = React.useRef<HTMLDivElement>(null)
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   const handleLogout = () => {
     logout()
@@ -20,7 +20,7 @@ export const ProfileMenu = ({ user }: { user: AuthUser | User } ) => {
     setOpen(false)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const click = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false)
