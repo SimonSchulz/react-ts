@@ -37,13 +37,21 @@ export const Header = () => {
             STORE
           </Link>
           <div className="hidden sm:flex gap-4 text-sm ml-4">
-            <Link to="/products">Search</Link>
-            <Link to="/chat">Chat</Link>
+            <Link to="/products" preload="intent">
+              Search
+            </Link>
+            <Link to="/chat" preload="intent">
+              Chat
+            </Link>
           </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="relative group">
-            <Link to="/cart" className="relative flex items-center">
+            <Link
+              to="/cart"
+              preload="intent"
+              className="relative flex items-center"
+            >
               <img src="/cart.svg" className="w-5 h-5" alt="cart" />
               {totalCount > 0 && (
                 <span className="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-2 min-w-5 text-center">

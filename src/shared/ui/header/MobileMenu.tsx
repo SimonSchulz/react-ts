@@ -21,25 +21,25 @@ export const MobileMenu = ({ open, onClose, user }: Props) => {
           ✕
         </button>
 
-        <Link to="/" onClick={onClose}>
+        <Link to="/" preload="intent" onClick={onClose}>
           Home
         </Link>
 
-        <Link to="/products" onClick={onClose}>
+        <Link to="/products" preload="intent" onClick={onClose}>
           Search
         </Link>
 
-        <Link to="/chat" onClick={onClose}>
+        <Link to="/chat" preload="intent" onClick={onClose}>
           Chat
         </Link>
 
-        <Link to="/cart" onClick={onClose}>
+        <Link to="/cart" preload="intent" onClick={onClose}>
           Cart
         </Link>
 
         <div className="border-t pt-4 mt-auto">
           {user ? (
-            <Link to="/me" onClick={onClose}>
+            <Link to="/me" preload="intent" onClick={onClose}>
               {user.username}
             </Link>
           ) : (

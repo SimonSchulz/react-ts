@@ -58,6 +58,7 @@ export const ProfileMenu = ({ user }: { user: AuthUser | User }) => {
 
           <Link
             to="/me"
+            preload="intent"
             onClick={() => setOpen(false)}
             className="block px-3 py-2 hover:bg-gray-100 text-sm"
           >
