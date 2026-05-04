@@ -4,9 +4,20 @@ import { LoginModal } from '../shared/ui/LoginModal'
 import { Suspense } from 'react'
 import { Header } from '../shared/ui/header/Header.tsx'
 import { ToastContainer } from '../shared/ui/ToastContainer.tsx'
+import { queryClient } from '../shared/app/queryClient.ts'
+import { QUERY_KEYS } from '../shared/config/constants.ts'
+import { ErrorBoundary } from '../shared/ui/ErrorBoundary.tsx'
 
 export const Route = createRootRoute({
-  component: RootComponent
+  component: RootComponent,
+  errorComponent: ({ error }) => (
+    <ErrorBoundary
+      message={(error as Error).message}
+      onRetry={() =>
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] })
+      }
+    />
+  )
 })
 
 function RootComponent() {

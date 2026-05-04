@@ -1,8 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { useQueryClient } from '@tanstack/react-query'
 import type { Product } from '../../types/product.ts'
-import { QUERY_KEYS } from '../../config/constants.ts'
-import { getProductById } from '../../api/product.ts'
 import { AddToCartControl } from '../AddToCartControl.tsx'
 
 type Props = {
@@ -11,24 +8,11 @@ type Props = {
 }
 
 export const ProductCard = ({ product, priority }: Props) => {
-  const queryClient = useQueryClient()
-
-  const handlePrefetch = () => {
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.PRODUCT, product.id],
-      queryFn: () => getProductById(product.id)
-    })
-
-    const img = new Image()
-    img.src = product.thumbnail
-  }
-
   return (
     <div className="border border-gray-200 rounded-xl p-3 flex flex-col gap-3 hover:scale-[1.02] transition">
       <Link
         to="/products/$id"
         params={{ id: String(product.id) }}
-        onMouseEnter={handlePrefetch}
         className="flex flex-col gap-2"
       >
         <div className="aspect-square overflow-hidden rounded-lg">
@@ -57,7 +41,6 @@ export const ProductCard = ({ product, priority }: Props) => {
           </div>
         </div>
       </Link>
-
       <AddToCartControl product={product} />
     </div>
   )
