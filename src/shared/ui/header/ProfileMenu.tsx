@@ -5,7 +5,7 @@ import type { AuthUser } from '../../types/auth.ts'
 import type { User } from '../../types/user.ts'
 import { useEffect, useRef, useState } from 'react'
 
-export const ProfileMenu = ({ user }: { user: AuthUser | User } ) => {
+export const ProfileMenu = ({ user }: { user: AuthUser | User }) => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { logout } = useAuthStore()

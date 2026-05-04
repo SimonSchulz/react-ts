@@ -28,7 +28,7 @@ export default function ProductsPage() {
   const handlePageChange = (p: number) => {
     navigate({
       to: '/products/',
-      search: (prev:SearchParams) => ({
+      search: (prev: SearchParams) => ({
         ...prev,
         page: p
       })
@@ -38,7 +38,7 @@ export default function ProductsPage() {
   const handleSearchChange = (value: string) => {
     navigate({
       to: '/products/',
-      search: (prev:SearchParams) => ({
+      search: (prev: SearchParams) => ({
         ...prev,
         q: value,
         page: 1

@@ -1,4 +1,5 @@
 # React + TypeScript + Vite
+
 # Application
 
 ## 🚀 Deployment
@@ -13,26 +14,27 @@ wss://simplechat-phc3.onrender.com
 https://simplechat-phc3.onrender.com
 
 ---
+
 ## 🧠 Tech Stack
 
-* React
-* TypeScript
-* TanStack Query
-* TanStack Router
-* Zustand
-* Tailwind CSS
+- React
+- TypeScript
+- TanStack Query
+- TanStack Router
+- Zustand
+- Tailwind CSS
 
 ---
 
 ## 📋 Requirements
 
-* Authentication flow (login, protected requests)
-* Product list and product details page
-* Category filtering
-* Pagination
-* Shopping cart (add, remove, update)
-* Cart persistence
-* Error handling
+- Authentication flow (login, protected requests)
+- Product list and product details page
+- Category filtering
+- Pagination
+- Shopping cart (add, remove, update)
+- Cart persistence
+- Error handling
 
 ---
 
