@@ -17,7 +17,7 @@ export const ProductGallery = ({ thumbnail, images, title }: Props) => {
         <img src={image} alt={title} className="w-full h-full object-cover" />
       </div>
 
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="flex gap-2 overflow-x-auto p-2">
         {[thumbnail, ...(images || [])].map((img) => (
           <img
             key={img}
